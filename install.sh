@@ -8,12 +8,13 @@ NC='\033[0m' # No Color
 
 ### VARIABLES
 starting_file="$(pwd)/start.sh"
+cron_time="00 08 * * *"
 
 ### EXECUTION
 if [ -f "$starting_file" ]; then
-	cronjob="00 00 06 12 * $starting_file"
+	cronjob="$cron_time $starting_file"
 	if crontab -l | grep -q "$starting_file"; then
-        	echo -e "${RED}Failed : ${BLUE}$starting_file${NC} is already in crontab. Remove it first."
+        	echo -e "${RED}Failed : ${BLUE}$starting_file${NC} is already in crontab.\nRemove it first using ${BLUE}crontab -e${NC}."
 	else
 		echo -e "${GREEN}Success : ${BLUE}$starting_file${NC} added to crontab."
 		(crontab -l && echo "$cronjob") > crontab.tmp && crontab crontab.tmp && rm crontab.tmp 
